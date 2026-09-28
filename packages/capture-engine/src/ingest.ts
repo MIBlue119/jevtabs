@@ -3,9 +3,9 @@ import {
   type BrowserEventDraft,
   type Clock,
   type EventLog,
-  type IdGenerator,
   type IngestReceipt,
   browserEventSchema,
+  deterministicUuid,
   toTimestamp,
 } from '@jevtabs/core-domain';
 
@@ -21,7 +21,6 @@ import {
 export interface IngestOptions {
   readonly log: EventLog;
   readonly clock: Clock;
-  readonly ids: IdGenerator;
   /** Stable for the life of a browser session; survives worker termination. */
   readonly captureSessionId: string;
   /**
@@ -33,6 +32,28 @@ export interface IngestOptions {
 }
 
 const LOW_VALUE_TYPES = new Set<BrowserEvent['type']>(['interaction']);
+
+/**
+ * An event's identity is the observation itself, not the moment we happened to
+ * mint an id for it.
+ *
+ * This is what makes replay idempotent in the way the architecture requires.
+ * The browser adapter can redeliver a burst after the service worker is
+ * restarted mid-drain, and the log recognizes the redelivered observations as
+ * the ones it already holds instead of writing a second copy. A clock-derived
+ * id could not do that: it would describe when we reacted, which is precisely
+ * the thing that differs between the original delivery and the retry.
+ *
+ * Two observations that agree on every field — same tab, same page, same
+ * millisecond, same capture session — are the same observation, and collapsing
+ * them is correct rather than lossy.
+ */
+function eventIdFor(draft: BrowserEventDraft, captureSessionId: string): string {
+  const canonical = JSON.stringify(
+    Object.fromEntries(Object.entries(draft).sort(([a], [b]) => (a < b ? -1 : 1))),
+  );
+  return deterministicUuid('event', `${captureSessionId}|${canonical}`);
+}
 
 export function createIngest(options: IngestOptions): {
   ingest(drafts: BrowserEventDraft[]): Promise<IngestReceipt>;
@@ -60,7 +81,7 @@ export function createIngest(options: IngestOptions): {
       const rejected: IngestReceipt['rejected'] = [];
 
       for (const draft of candidates) {
-        const eventId = options.ids.next();
+        const eventId = eventIdFor(draft, options.captureSessionId);
         const parsed = browserEventSchema.safeParse({
           ...draft,
           schemaVersion: 1,

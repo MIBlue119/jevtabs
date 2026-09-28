@@ -16,12 +16,14 @@ import {
   type VisitPolicy,
   DEFAULT_VISIT_POLICY,
   dedupe,
+  deterministicUuid,
   fromTimestamp,
   termsOf,
   threadDecisionSchema,
   toTimestamp,
   truncate,
 } from '@jevtabs/core-domain';
+import { membershipIdFor } from './corrections.js';
 import { isSearchHost, visitFeatures } from './features.js';
 import type { ThreadReadModel } from './store.js';
 
@@ -121,7 +123,9 @@ export function createThreadEngine(options: ThreadEngineOptions): ThreadEngine {
       if (decision.kind === 'review_required' || uncertainAssignment) {
         const review: ReviewItem = {
           schemaVersion: 1,
-          reviewId: options.ids.next(),
+          // One open review per Visit: re-classifying the same Visit must not
+          // pile up a second question about it.
+          reviewId: deterministicUuid('review', `classification|${visit.visitId}`),
           kind: 'classification',
           status: 'open',
           createdAt: now,
@@ -163,8 +167,8 @@ export function createThreadEngine(options: ThreadEngineOptions): ThreadEngine {
         return {
           visitId: visit.visitId,
           thread,
-          membership: membershipFor(options, visit, thread.threadId, decision, now),
-          evidence: evidenceFor(options, visit, page, thread.threadId, true, now),
+          membership: membershipFor(visit, thread.threadId, decision, now),
+          evidence: evidenceFor(visit, page, thread.threadId, true, now),
           review: null,
           outcome: 'created',
         };
@@ -193,9 +197,8 @@ export function createThreadEngine(options: ThreadEngineOptions): ThreadEngine {
       return {
         visitId: visit.visitId,
         thread,
-        membership: membershipFor(options, visit, thread.threadId, decision, now),
+        membership: membershipFor(visit, thread.threadId, decision, now),
         evidence: evidenceFor(
-          options,
           visit,
           page,
           thread.threadId,
@@ -210,15 +213,18 @@ export function createThreadEngine(options: ThreadEngineOptions): ThreadEngine {
 }
 
 function membershipFor(
-  options: ThreadEngineOptions,
   visit: Visit,
   threadId: string,
-  decision: { confidence: number; rationale: string[]; provider: { name: string; version: string } },
+  decision: {
+    confidence: number;
+    rationale: string[];
+    provider: { name: string; version: string };
+  },
   now: string,
 ): ThreadMembership {
   return {
     schemaVersion: 1,
-    membershipId: options.ids.next(),
+    membershipId: membershipIdFor(visit.visitId, threadId, 1),
     visitId: visit.visitId,
     threadId,
     revision: 1,
@@ -232,8 +238,12 @@ function membershipFor(
   };
 }
 
+/** Evidence identity is "this Visit, promoted into this Thread". */
+export function evidenceIdFor(threadId: string, visitId: string): string {
+  return deterministicUuid('evidence', `${threadId}|${visitId}`);
+}
+
 function evidenceFor(
-  options: ThreadEngineOptions,
   visit: Visit,
   page: Page,
   threadId: string,
@@ -242,7 +252,7 @@ function evidenceFor(
 ): Evidence {
   return {
     schemaVersion: 1,
-    evidenceId: options.ids.next(),
+    evidenceId: evidenceIdFor(threadId, visit.visitId),
     threadId,
     visitId: visit.visitId,
     pageId: page.pageId,

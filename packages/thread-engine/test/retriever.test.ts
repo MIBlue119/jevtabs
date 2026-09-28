@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { DAY_MS, type Visit } from '@jevtabs/core-domain';
-import { RETRIEVAL_WEIGHTS, isAmbientHost, isSearchHost, scoreCandidate } from '@jevtabs/thread-engine';
+import {
+  RETRIEVAL_WEIGHTS,
+  isAmbientHost,
+  isSearchHost,
+  scoreCandidate,
+} from '@jevtabs/thread-engine';
 import { FIXTURE_EPOCH, createHarness, makePage, makeThread } from '@jevtabs/test-fixtures';
 
 const harness = createHarness();

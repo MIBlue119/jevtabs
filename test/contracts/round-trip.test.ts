@@ -16,7 +16,13 @@ import {
   toTimestamp,
 } from '@jevtabs/core-domain';
 import { VisitBuilder, initialVisitBuilderState } from '@jevtabs/capture-engine';
-import { FIXTURE_EPOCH, createHarness, interleavedMorning, makePage, makeThread } from '@jevtabs/test-fixtures';
+import {
+  FIXTURE_EPOCH,
+  createHarness,
+  interleavedMorning,
+  makePage,
+  makeThread,
+} from '@jevtabs/test-fixtures';
 
 /**
  * Contract tests.

@@ -20,13 +20,13 @@ Everything runs in Node. No browser, network, or model is needed for the test su
 
 ## Branching — git flow
 
-| Branch | Purpose |
-|---|---|
-| `main` | Released, tagged states only. Never committed to directly. |
-| `develop` | Integration branch. Feature branches merge here. |
-| `feature/*` | One coherent change. Branch from `develop`, merge back with `--no-ff`. |
+| Branch      | Purpose                                                                           |
+| ----------- | --------------------------------------------------------------------------------- |
+| `main`      | Released, tagged states only. Never committed to directly.                        |
+| `develop`   | Integration branch. Feature branches merge here.                                  |
+| `feature/*` | One coherent change. Branch from `develop`, merge back with `--no-ff`.            |
 | `release/*` | Version bump, changelog, final fixes. Merges to `main` **and** back to `develop`. |
-| `hotfix/*` | Urgent fix off `main`. Merges to `main` **and** `develop`. |
+| `hotfix/*`  | Urgent fix off `main`. Merges to `main` **and** `develop`.                        |
 
 ```bash
 git checkout develop && git pull
