@@ -1,0 +1,36 @@
+{
+  "name": "@jevtabs/extension",
+  "version": "0.1.0",
+  "private": true,
+  "description": "JevTabs browser extension — capture, workspace, side panel, and popup for Chrome and Edge.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "postinstall": "wxt prepare",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@jevtabs/capture-engine": "workspace:*",
+    "@jevtabs/context-broker": "workspace:*",
+    "@jevtabs/core-domain": "workspace:*",
+    "@jevtabs/thread-engine": "workspace:*",
+    "dexie": "^4.4.6",
+    "dexie-react-hooks": "^4.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@jevtabs/test-fixtures": "workspace:*",
+    "@types/chrome": "^0.3.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@wxt-dev/module-react": "^1.2.2",
+    "fake-indexeddb": "^6.2.5",
+    "vitest": "^5.0.2",
+    "wxt": "^0.21.4"
+  }
+}

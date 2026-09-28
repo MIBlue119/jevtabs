@@ -1,0 +1,413 @@
+/*
+ * JevTabs design tokens.
+ *
+ * Carried over from the product mockup: a warm paper ground rather than a cold
+ * grey, indigo for action, and a muted accent set for Thread identity. The
+ * palette does real work — a Thread's accent is how you recognize it across the
+ * nav rail, the inbox, and the side panel without reading the title.
+ */
+
+:root {
+  --bg: #f3f2ee;
+  --surface: #ffffff;
+  --surface-soft: #f8f8f6;
+  --surface-sunken: #eeedea;
+  --ink: #171923;
+  --ink-soft: #3d4250;
+  --muted: #6d7280;
+  --line: #e5e5e1;
+  --line-strong: #d7d7d2;
+
+  --indigo: #485acb;
+  --indigo-dark: #3545ad;
+  --indigo-soft: #eceefb;
+  --green: #2b9a74;
+  --green-soft: #e8f6f0;
+  --blue: #4e77d8;
+  --blue-soft: #eaf0fc;
+  --violet: #7a5fd0;
+  --violet-soft: #f0ecfb;
+  --amber: #c57b20;
+  --amber-soft: #fff5e5;
+  --red: #c1453d;
+  --red-soft: #fdeceb;
+  --gray: #8a8f9c;
+  --gray-soft: #eeeef0;
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(34, 38, 54, 0.06);
+  --shadow: 0 18px 50px rgba(34, 38, 54, 0.1), 0 2px 6px rgba(34, 38, 54, 0.05);
+
+  --font:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Noto Sans TC',
+    sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16171c;
+    --surface: #1e1f26;
+    --surface-soft: #24252d;
+    --surface-sunken: #131419;
+    --ink: #f0f0f3;
+    --ink-soft: #c9cad2;
+    --muted: #9297a3;
+    --line: #2d2e37;
+    --line-strong: #3a3b45;
+
+    --indigo: #7b8bec;
+    --indigo-dark: #94a1f2;
+    --indigo-soft: #262a45;
+    --green: #4fc39a;
+    --green-soft: #1b2e29;
+    --blue: #7ba0ee;
+    --blue-soft: #1e2739;
+    --violet: #a68bea;
+    --violet-soft: #272140;
+    --amber: #e0a556;
+    --amber-soft: #33291a;
+    --red: #e97b74;
+    --red-soft: #35211f;
+    --gray: #8a8f9c;
+    --gray-soft: #262730;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: 26px;
+  line-height: 1.22;
+}
+h2 {
+  font-size: 18px;
+}
+h3 {
+  font-size: 15px;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--indigo);
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 7px 13px;
+  font-weight: 550;
+  font-size: 13px;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--indigo);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--indigo-dark);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-soft);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-sunken);
+  color: var(--ink);
+}
+
+.btn-text {
+  background: none;
+  border: 0;
+  color: var(--indigo);
+  padding: 2px 4px;
+  font-weight: 550;
+  font-size: 13px;
+}
+.btn-text:hover {
+  text-decoration: underline;
+}
+
+.btn-danger {
+  background: var(--red-soft);
+  color: var(--red);
+  border-color: transparent;
+}
+
+.btn-sm {
+  padding: 4px 9px;
+  font-size: 12px;
+}
+
+/* ----------------------------------------------------------------- panels */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-body {
+  padding: 16px 18px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------ thread dots */
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+  display: inline-block;
+}
+.dot-green {
+  background: var(--green);
+}
+.dot-blue {
+  background: var(--blue);
+}
+.dot-violet {
+  background: var(--violet);
+}
+.dot-amber {
+  background: var(--amber);
+}
+.dot-gray {
+  background: var(--gray);
+}
+
+/* -------------------------------------------------------------- lifecycle */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  background: var(--gray-soft);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.chip-active {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.chip-dormant {
+  background: var(--gray-soft);
+  color: var(--muted);
+}
+.chip-paused {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.chip-completed {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+.chip-reason {
+  background: var(--surface-sunken);
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+.confidence-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+.confidence-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+}
+
+/* ---------------------------------------------------------------- favicon */
+
+.favicon {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--gray);
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+/* ----------------------------------------------------------------- layout */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  align-items: center;
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  padding: 34px 20px;
+  text-align: center;
+  color: var(--muted);
+}
+.empty strong {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+/* ------------------------------------------------------------------ forms */
+
+.field {
+  display: block;
+  width: 100%;
+  padding: 8px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.field:focus {
+  border-color: var(--indigo);
+  outline: none;
+}
+
+textarea.field {
+  resize: vertical;
+  min-height: 72px;
+  line-height: 1.55;
+}
+
+.switch-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.switch-row:last-child {
+  border-bottom: 0;
+}
