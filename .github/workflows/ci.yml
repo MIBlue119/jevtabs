@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Format
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      # The published JSON Schemas are generated from the Zod definitions.
+      # Drift means an out-of-language consumer would validate the wrong shape.
+      - name: Contracts are in sync
+        run: pnpm contracts:check
+
+      - name: Unit and contract tests
+        run: pnpm test
+
+      # Run separately so a capture-contract regression is unmistakable in the
+      # job list rather than buried in a combined summary.
+      - name: Privacy canaries
+        run: pnpm test:privacy
+
+      - name: Build extension
+        run: pnpm build

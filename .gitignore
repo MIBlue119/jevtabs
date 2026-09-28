@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.output/
+.wxt/
+coverage/
+*.tsbuildinfo
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+web-ext.log

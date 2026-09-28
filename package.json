@@ -1,0 +1,44 @@
+{
+  "name": "jevtabs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "JevTabs — a local-first browser context workspace. Reconstructs durable, source-backed Threads from chaotic browsing.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "packageManager": "pnpm@9.7.1",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:contracts": "vitest run --project contracts",
+    "test:privacy": "vitest run --project privacy",
+    "test:extension": "pnpm --filter @jevtabs/extension test",
+    "contracts:generate": "tsx scripts/generate-contracts.ts",
+    "contracts:check": "tsx scripts/generate-contracts.ts --check",
+    "build": "pnpm --filter @jevtabs/extension build",
+    "dev": "pnpm --filter @jevtabs/extension dev",
+    "zip": "pnpm --filter @jevtabs/extension zip"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@jevtabs/capture-engine": "workspace:*",
+    "@jevtabs/context-broker": "workspace:*",
+    "@jevtabs/core-domain": "workspace:*",
+    "@jevtabs/test-fixtures": "workspace:*",
+    "@jevtabs/thread-engine": "workspace:*",
+    "@types/node": "^22.19.0",
+    "eslint": "^10.11.0",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.2",
+    "zod": "^4.6.5"
+  }
+}
