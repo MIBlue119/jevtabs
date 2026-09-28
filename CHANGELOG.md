@@ -42,7 +42,7 @@ workspace work end to end, locally, with no network.
   deletion happened but never what it said.
 - **Contracts** — JSON Schemas generated from the Zod definitions and checked in
   CI for drift.
-- **Tests** — 155 across unit, contract, privacy, and extension suites,
+- **Tests** — 187 across unit, contract, privacy, and extension suites,
   including canary assertions on the absence of specific bytes, a manifest test
   that fails if install-time permissions widen, and crash-recovery tests that
   kill the service worker after every single event.
