@@ -32,9 +32,7 @@ describe('VisitBuilder', () => {
     const { visits } = replay(session.events, builder);
 
     // The repo tab loaded at minute 19 and was activated at minute 22.
-    const repo = [...visits.values()].find(
-      (visit) => visit.pageId === session.pages.repo.pageId,
-    );
+    const repo = [...visits.values()].find((visit) => visit.pageId === session.pages.repo.pageId);
     expect(repo).toBeDefined();
     expect(repo?.startedAt).toBe('2026-09-18T09:22:00.000Z');
   });
@@ -101,9 +99,7 @@ describe('VisitBuilder', () => {
     const session = interleavedMorning();
     const { visits } = replay(session.events, builder);
 
-    const repo = [...visits.values()].filter(
-      (visit) => visit.pageId === session.pages.repo.pageId,
-    );
+    const repo = [...visits.values()].filter((visit) => visit.pageId === session.pages.repo.pageId);
     // Read, glanced at mail, came straight back: one Visit, two activations.
     expect(repo).toHaveLength(1);
     expect(repo[0]?.signals.activationCount).toBe(2);

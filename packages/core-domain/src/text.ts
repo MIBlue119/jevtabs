@@ -54,8 +54,7 @@ const STOPWORDS = new Set([
 ]);
 
 /** Latin word characters, CJK ideographs, kana, and Hangul. */
-const TOKEN_RE =
-  /[a-z0-9]+|[一-鿿]|[぀-ヿ]+|[가-힯]+/g;
+const TOKEN_RE = /[a-z0-9]+|[一-鿿]|[぀-ヿ]+|[가-힯]+/g;
 
 /**
  * Tokenizes titles and paths. CJK is split per ideograph and then bigrammed by

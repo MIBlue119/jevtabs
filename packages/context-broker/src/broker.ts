@@ -57,7 +57,11 @@ function withTokens(item: Omit<ContextItem, 'estimatedTokens'>): ContextItem {
   return { ...item, estimatedTokens: estimateTokens(item.text) };
 }
 
-function bump(omissions: Map<ContextOmission['reason'], number>, reason: ContextOmission['reason'], by = 1): void {
+function bump(
+  omissions: Map<ContextOmission['reason'], number>,
+  reason: ContextOmission['reason'],
+  by = 1,
+): void {
   omissions.set(reason, (omissions.get(reason) ?? 0) + by);
 }
 
@@ -79,7 +83,11 @@ export function createContextBroker(options: BrokerOptions): ContextBroker {
         }
         threads.push({ threadId, title: thread.title, status: thread.status });
 
-        const push = (item: Omit<ContextItem, 'estimatedTokens'>, at: string, key: string): void => {
+        const push = (
+          item: Omit<ContextItem, 'estimatedTokens'>,
+          at: string,
+          key: string,
+        ): void => {
           ranked.push({
             item: withTokens(item),
             threadRank,

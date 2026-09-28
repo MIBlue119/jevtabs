@@ -1,7 +1,7 @@
 import {
   type Clock,
-  type IdGenerator,
   type ThreadMembership,
+  deterministicUuid,
   toTimestamp,
 } from '@jevtabs/core-domain';
 
@@ -17,7 +17,16 @@ import {
 
 export interface CorrectionContext {
   readonly clock: Clock;
-  readonly ids: IdGenerator;
+}
+
+/**
+ * A membership is identified by what it asserts — this Visit, in this Thread,
+ * at this revision — rather than by when the row happened to be written. Two
+ * corrections that say the same thing are the same correction, so replaying
+ * one cannot fork the history it is supposed to append to.
+ */
+export function membershipIdFor(visitId: string, threadId: string, revision: number): string {
+  return deterministicUuid('membership', `${visitId}|${threadId}|${revision}`);
 }
 
 export interface CorrectionResult {
@@ -55,7 +64,7 @@ export function correctMembership(
     previous: current === null ? null : { ...current, state: 'corrected' },
     next: {
       schemaVersion: 1,
-      membershipId: context.ids.next(),
+      membershipId: membershipIdFor(visitId, threadId, (current?.revision ?? 0) + 1),
       visitId,
       threadId,
       revision: (current?.revision ?? 0) + 1,

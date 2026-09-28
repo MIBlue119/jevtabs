@@ -15,7 +15,6 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@jevtabs/test-fixtures": "workspace:*",
     "@jevtabs/core-domain": "workspace:*"
   }
 }

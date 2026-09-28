@@ -14,7 +14,12 @@ import {
   createContextBroker,
   renderContextPackMarkdown,
 } from '@jevtabs/context-broker';
-import { ADVERSARIAL_PAGES, FIXTURE_EPOCH, createHarness, makeThread } from '@jevtabs/test-fixtures';
+import {
+  ADVERSARIAL_PAGES,
+  FIXTURE_EPOCH,
+  createHarness,
+  makeThread,
+} from '@jevtabs/test-fixtures';
 
 const harness = createHarness();
 const thread: Thread = makeThread(harness, {
@@ -184,7 +189,10 @@ describe('ContextBroker', () => {
 
   it('gives every factual item provenance or an explicit inference label', async () => {
     const pack = await brokerOf().build(
-      requestOf({ detail: 'full_trace', include: { findings: true, sourceExcerpts: true, openQuestions: true, rawActivity: true } }),
+      requestOf({
+        detail: 'full_trace',
+        include: { findings: true, sourceExcerpts: true, openQuestions: true, rawActivity: true },
+      }),
     );
     expect(pack.items.length).toBeGreaterThan(0);
     for (const item of pack.items) {
@@ -205,7 +213,9 @@ describe('ContextBroker', () => {
 
   it('reports a thread it could not read instead of silently skipping it', async () => {
     const pack = await brokerOf().build(
-      requestOf({ threadIds: [thread.threadId, '01930000-0000-7000-8000-0000000000zz'.replace(/z/g, 'c')] }),
+      requestOf({
+        threadIds: [thread.threadId, '01930000-0000-7000-8000-0000000000zz'.replace(/z/g, 'c')],
+      }),
     );
     expect(pack.omissions).toContainEqual({ reason: 'scope_not_granted', count: 1 });
   });

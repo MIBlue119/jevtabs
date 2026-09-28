@@ -35,7 +35,7 @@ JevTabs **never** collects:
 
 Authentication, banking, health, identity, password-manager, and payment surfaces are denied by default. You can exclude any domain, pause tracking, and delete anything — deletion removes searchable content immediately and leaves only a tombstone recording that a deletion happened, never what it said.
 
-Everything stays on your machine. There is no account, no server, and no network call in the capture path. The privacy suite ([`test/privacy`](test/privacy)) asserts on the *absence* of specific canary bytes rather than on the presence of a policy, because a policy that is right in prose and wrong in one field is, from your point of view, no policy at all.
+Everything stays on your machine. There is no account, no server, and no network call in the capture path. The privacy suite ([`test/privacy`](test/privacy)) asserts on the _absence_ of specific canary bytes rather than on the presence of a policy, because a policy that is right in prose and wrong in one field is, from your point of view, no policy at all.
 
 Page text is always tagged `untrusted_source_content`. It reaches a model or agent as quoted evidence; text inside a page can never authorize a tool, widen a scope, or change a rule.
 
@@ -69,11 +69,11 @@ pnpm dev
 
 ## Using it
 
-| Surface | What it is for |
-|---|---|
-| **Popup** (toolbar icon) | Tracking state, pause, exclude this domain, open the workspace |
-| **Side panel** | Stay oriented while browsing: current Thread, confidence, why, checkpoint |
-| **Workspace** (full tab) | Today, Activity Inbox, Threads, Thread detail, Agent Context, Settings |
+| Surface                  | What it is for                                                            |
+| ------------------------ | ------------------------------------------------------------------------- |
+| **Popup** (toolbar icon) | Tracking state, pause, exclude this domain, open the workspace            |
+| **Side panel**           | Stay oriented while browsing: current Thread, confidence, why, checkpoint |
+| **Workspace** (full tab) | Today, Activity Inbox, Threads, Thread detail, Agent Context, Settings    |
 
 Browse normally for a while. Visits accumulate, Threads get proposed, and anything genuinely ambiguous lands in the Activity Inbox for a one-second decision.
 

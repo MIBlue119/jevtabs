@@ -7,12 +7,9 @@
     "packages/*/src/**/*.ts",
     "packages/*/src/**/*.tsx",
     "packages/*/test/**/*.ts",
-    "apps/extension/src/**/*.ts",
-    "apps/extension/src/**/*.tsx",
-    "apps/extension/test/**/*.ts",
     "scripts/**/*.ts",
     "test/**/*.ts",
     "*.ts"
   ],
-  "exclude": ["node_modules", "**/dist", "**/.output", "**/.wxt"]
+  "exclude": ["node_modules", "**/dist", "**/.output", "**/.wxt", "apps"]
 }

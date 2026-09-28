@@ -117,7 +117,8 @@ export class VisitBuilder {
   snapshot(open: OpenVisitState, at: string, status: 'open' | 'closed'): Visit {
     const spans = open.spans;
     const foregroundMs = spans.reduce(
-      (total, span) => total + Math.max(0, fromTimestamp(span.endedAt) - fromTimestamp(span.startedAt)),
+      (total, span) =>
+        total + Math.max(0, fromTimestamp(span.endedAt) - fromTimestamp(span.startedAt)),
       0,
     );
     const lastSpan = spans.at(-1);
@@ -148,7 +149,12 @@ export class VisitBuilder {
    * Closes the currently open foreground span, capping it so that walking away
    * from the machine cannot inflate attention time.
    */
-  private closeSpan(open: OpenVisitState, at: string, closedBy: AttentionSpan['closedBy'], lastActivityAt: string | null): void {
+  private closeSpan(
+    open: OpenVisitState,
+    at: string,
+    closedBy: AttentionSpan['closedBy'],
+    lastActivityAt: string | null,
+  ): void {
     if (open.spanStartedAt === null) return;
     const startedMs = fromTimestamp(open.spanStartedAt);
     const capMs =
@@ -174,7 +180,12 @@ export class VisitBuilder {
    * in the same tab within the continuation window resumes the existing Visit
    * instead of fragmenting one session into a dozen rows.
    */
-  private ensureVisit(state: VisitBuilderState, tabKey: string, at: string, captureSessionId: string): OpenVisitState | null {
+  private ensureVisit(
+    state: VisitBuilderState,
+    tabKey: string,
+    at: string,
+    captureSessionId: string,
+  ): OpenVisitState | null {
     const existing = state.open[tabKey];
     const tab = state.tabs[tabKey];
     if (existing !== undefined) return existing;
@@ -213,7 +224,13 @@ export class VisitBuilder {
     return created;
   }
 
-  private finish(state: VisitBuilderState, tabKey: string, at: string, closedBy: AttentionSpan['closedBy'], out: Visit[]): void {
+  private finish(
+    state: VisitBuilderState,
+    tabKey: string,
+    at: string,
+    closedBy: AttentionSpan['closedBy'],
+    out: Visit[],
+  ): void {
     const open = state.open[tabKey];
     if (open === undefined) return;
     this.closeSpan(open, at, closedBy, state.lastActivityAt);

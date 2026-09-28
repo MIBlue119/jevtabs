@@ -82,11 +82,13 @@ export function createHeuristicDecisionProvider(options: HeuristicOptions = {}):
       }
 
       if (top.signals.navigation === 1) rationale.push('同一導覽路徑 · same navigation path');
-      if (top.signals.priorCorrections >= 1) rationale.push('你已確認過這個來源 · confirmed source');
+      if (top.signals.priorCorrections >= 1)
+        rationale.push('你已確認過這個來源 · confirmed source');
       if (top.signals.lexical >= 0.3) rationale.push('標題語義相近 · title overlap');
       if (top.signals.recency >= 0.6) rationale.push('與最近活動同時段 · recent activity');
       if (visit.signals.copied) rationale.push('你複製了內容 · copied content');
-      if (visit.activationCount >= 3) rationale.push(`切回 ${visit.activationCount} 次 · revisited`);
+      if (visit.activationCount >= 3)
+        rationale.push(`切回 ${visit.activationCount} 次 · revisited`);
 
       const margin = runnerUp === undefined ? 1 : top.score - runnerUp.score;
       const confidence = calibrate(top.score, margin, deliberate);

@@ -27,8 +27,8 @@ describe('published JSON schemas', () => {
       readFileSync(join(process.cwd(), 'contracts', 'events.schema.json'), 'utf8'),
     );
     const branches = document.$defs.BrowserEvent.oneOf ?? document.$defs.BrowserEvent.anyOf;
-    const types = branches.map((branch: { properties: { type: { const: string } } }) =>
-      branch.properties.type.const,
+    const types = branches.map(
+      (branch: { properties: { type: { const: string } } }) => branch.properties.type.const,
     );
     expect(types).toEqual([
       'navigation_committed',

@@ -42,7 +42,10 @@ const TITLE_SECRET_PATTERNS: readonly RegExp[] = [
 export function redactTitle(title: string): string {
   let out = title;
   for (const pattern of TITLE_SECRET_PATTERNS) {
-    out = out.replace(new RegExp(pattern.source, pattern.flags.includes('i') ? 'gi' : 'g'), '[redacted]');
+    out = out.replace(
+      new RegExp(pattern.source, pattern.flags.includes('i') ? 'gi' : 'g'),
+      '[redacted]',
+    );
   }
   return out.slice(0, 512);
 }

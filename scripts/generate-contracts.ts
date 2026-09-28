@@ -77,10 +77,11 @@ for (const [name, members] of Object.entries(BUNDLES)) {
   const target = join(outDir, name);
   const next = render(name, members);
   if (check) {
-    let current = '';
+    let current: string;
     try {
       current = readFileSync(target, 'utf8');
     } catch {
+      // Missing file counts as drift: the contract was never published.
       current = '';
     }
     if (current !== next) {

@@ -26,7 +26,14 @@ export interface UrlNormalizationOptions {
  * parameter is dropped; Settings can switch this preset on for people who want
  * document-identifying parameters preserved.
  */
-export const DOCUMENT_QUERY_ALLOWLIST: readonly string[] = ['v', 'id', 'page', 'p', 'issue', 'pull'];
+export const DOCUMENT_QUERY_ALLOWLIST: readonly string[] = [
+  'v',
+  'id',
+  'page',
+  'p',
+  'issue',
+  'pull',
+];
 
 /** Schemes JevTabs will never record, regardless of user settings. */
 export const OPAQUE_SCHEMES: readonly string[] = [
@@ -93,7 +100,8 @@ export function normalizeUrl(raw: string, options: UrlNormalizationOptions = {})
   }
 
   if (OPAQUE_SCHEMES.includes(url.protocol)) throw new UrlRejected('opaque-scheme');
-  if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new UrlRejected('non-web-scheme');
+  if (url.protocol !== 'http:' && url.protocol !== 'https:')
+    throw new UrlRejected('non-web-scheme');
   // `https://user:token@host/` — the credential is the payload, drop the whole URL.
   if (url.username !== '' || url.password !== '') throw new UrlRejected('credentials');
 

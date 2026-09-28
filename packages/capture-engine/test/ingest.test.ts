@@ -47,7 +47,11 @@ describe('ingest boundary', () => {
   it('writes to the durable log before the receipt resolves', async () => {
     const harness = createHarness();
     const log = memoryLog();
-    const ingest = createIngest({ log, clock: harness.clock, ids: harness.ids, captureSessionId: harness.captureSessionId });
+    const ingest = createIngest({
+      log,
+      clock: harness.clock,
+      captureSessionId: harness.captureSessionId,
+    });
 
     const receipt = await ingest.ingest([navigation]);
     expect(log.rows.size).toBe(1);
@@ -58,7 +62,11 @@ describe('ingest boundary', () => {
   it('stamps every event with schema version, ids, and the capture session', async () => {
     const harness = createHarness();
     const log = memoryLog();
-    const ingest = createIngest({ log, clock: harness.clock, ids: harness.ids, captureSessionId: harness.captureSessionId });
+    const ingest = createIngest({
+      log,
+      clock: harness.clock,
+      captureSessionId: harness.captureSessionId,
+    });
 
     await ingest.ingest([navigation]);
     const [stored] = [...log.rows.values()];
@@ -70,11 +78,13 @@ describe('ingest boundary', () => {
   it('rejects an event that violates the wire contract without naming its value', async () => {
     const harness = createHarness();
     const log = memoryLog();
-    const ingest = createIngest({ log, clock: harness.clock, ids: harness.ids, captureSessionId: harness.captureSessionId });
+    const ingest = createIngest({
+      log,
+      clock: harness.clock,
+      captureSessionId: harness.captureSessionId,
+    });
 
-    const receipt = await ingest.ingest([
-      { ...navigation, url: 'not-a-url' } as BrowserEventDraft,
-    ]);
+    const receipt = await ingest.ingest([{ ...navigation, url: 'not-a-url' } as BrowserEventDraft]);
     expect(receipt.accepted).toEqual([]);
     expect(receipt.rejected).toHaveLength(1);
     expect(receipt.rejected[0]?.reason).toBe('url');
@@ -88,28 +98,68 @@ describe('ingest boundary', () => {
     const ingest = createIngest({
       log,
       clock: harness.clock,
-      ids: harness.ids,
       captureSessionId: harness.captureSessionId,
       maxBatch: 3,
     });
 
-    const interactions: BrowserEventDraft[] = Array.from({ length: 6 }, () => ({
+    const interactions: BrowserEventDraft[] = Array.from({ length: 6 }, (_, index) => ({
       type: 'interaction',
-      occurredAt: '2026-09-18T09:12:01.000Z',
+      occurredAt: `2026-09-18T09:12:0${index}.000Z`,
       tabKey: '1:1',
       pageId: 'a'.repeat(32),
       kind: 'scroll',
     }));
+    const second: BrowserEventDraft = { ...navigation, occurredAt: '2026-09-18T09:13:00.000Z' };
 
-    const receipt = await ingest.ingest([navigation, navigation, ...interactions]);
+    const receipt = await ingest.ingest([navigation, second, ...interactions]);
     expect(receipt.droppedForCapacity).toBe(5);
     expect(receipt.accepted).toHaveLength(3);
+  });
+
+  it('recognizes a redelivered observation as the event it already holds', async () => {
+    const harness = createHarness();
+    const log = memoryLog();
+    const ingest = createIngest({
+      log,
+      clock: harness.clock,
+      captureSessionId: harness.captureSessionId,
+    });
+
+    // The browser adapter retries a burst after the worker is restarted.
+    const first = await ingest.ingest([navigation]);
+    const retry = await ingest.ingest([navigation]);
+
+    expect(first.accepted).toHaveLength(1);
+    expect(retry.accepted).toEqual([]);
+    expect(retry.duplicates).toEqual(first.accepted);
+    expect(log.rows.size).toBe(1);
+  });
+
+  it('gives genuinely different observations different identities', async () => {
+    const harness = createHarness();
+    const log = memoryLog();
+    const ingest = createIngest({
+      log,
+      clock: harness.clock,
+      captureSessionId: harness.captureSessionId,
+    });
+
+    await ingest.ingest([
+      navigation,
+      { ...navigation, occurredAt: '2026-09-18T09:12:05.000Z' },
+      { ...navigation, tabKey: '1:2' },
+    ]);
+    expect(log.rows.size).toBe(3);
   });
 
   it('treats an empty batch as a no-op', async () => {
     const harness = createHarness();
     const log = memoryLog();
-    const ingest = createIngest({ log, clock: harness.clock, ids: harness.ids, captureSessionId: harness.captureSessionId });
+    const ingest = createIngest({
+      log,
+      clock: harness.clock,
+      captureSessionId: harness.captureSessionId,
+    });
     await ingest.ingest([]);
     expect(log.writes).toBe(0);
   });

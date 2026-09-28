@@ -1,10 +1,4 @@
-import {
-  type Page,
-  type Visit,
-  type VisitFeatures,
-  dedupe,
-  termsOf,
-} from '@jevtabs/core-domain';
+import { type Page, type Visit, type VisitFeatures, dedupe, termsOf } from '@jevtabs/core-domain';
 
 /**
  * Hosts whose pages are almost always ambient rather than intentional work:
@@ -55,10 +49,10 @@ export function visitFeatures(
   referrerThreadIds: readonly string[] = [],
 ): VisitFeatures {
   const path = new URL(page.url).pathname;
-  const terms = dedupe([
-    ...termsOf(page.title),
-    ...termsOf(path.replace(/[/\-_.]/g, ' ')),
-  ]).slice(0, 48);
+  const terms = dedupe([...termsOf(page.title), ...termsOf(path.replace(/[/\-_.]/g, ' '))]).slice(
+    0,
+    48,
+  );
 
   return {
     visitId: visit.visitId,
