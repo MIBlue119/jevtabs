@@ -36,7 +36,18 @@ export default defineConfig({
     name: 'JevTabs',
     description:
       'A local-first browser context workspace. Reconstructs durable, source-backed Threads from chaotic browsing.',
-    permissions: ['tabs', 'storage', 'idle', 'alarms', 'sidePanel', 'unlimitedStorage'],
+    // `scripting` registers the optional interaction-signal content script at
+    // runtime. On its own it grants no access to any page — the ability to run
+    // there comes from the separate `<all_urls>` grant, which stays optional.
+    permissions: [
+      'tabs',
+      'storage',
+      'idle',
+      'alarms',
+      'scripting',
+      'sidePanel',
+      'unlimitedStorage',
+    ],
     optional_host_permissions: ['<all_urls>'],
     minimum_chrome_version: '116',
     action: {

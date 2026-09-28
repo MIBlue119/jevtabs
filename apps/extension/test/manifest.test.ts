@@ -25,7 +25,7 @@ describe.runIf(existsSync(MANIFEST))('built manifest', () => {
 
   it('requests only the permissions the capture design needs', () => {
     expect([...manifest.permissions].sort()).toEqual(
-      ['alarms', 'idle', 'sidePanel', 'storage', 'tabs', 'unlimitedStorage'].sort(),
+      ['alarms', 'idle', 'scripting', 'sidePanel', 'storage', 'tabs', 'unlimitedStorage'].sort(),
     );
   });
 
