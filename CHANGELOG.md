@@ -47,5 +47,5 @@ workspace work end to end, locally, with no network.
   that fails if install-time permissions widen, and crash-recovery tests that
   kill the service worker after every single event.
 
-[Unreleased]: https://github.com/OWNER/jevtabs/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/OWNER/jevtabs/releases/tag/v0.1.0
+[Unreleased]: https://github.com/MIBlue119/jevtabs/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/MIBlue119/jevtabs/releases/tag/v0.1.0
